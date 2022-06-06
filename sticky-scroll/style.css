@@ -27,7 +27,7 @@ header, footer {
     display: block;
     height: auto;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
     border: 1px solid black;
 }
 
@@ -52,4 +52,10 @@ article {
 .float-scroll > .inner {
     width: 150vw;
     height: 1px;
+    border: 1px solid transparent;
+}
+
+.hide {
+    visibility: hidden;
+    height: 0;
 }
