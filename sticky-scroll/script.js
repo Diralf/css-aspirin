@@ -1,19 +1,40 @@
-const floatScroll = document.getElementById('float-scroll');
-const containerScroll = document.getElementById('scroll-container');
+const stickyScroll = document.getElementById('sticky-scroll');
+const stickyScrollContent = document.getElementById('sticky-scroll-content');
+const containerScroll = document.getElementById('scrollable-container');
 const scrollable = document.getElementById('scrollable');
 
-floatScroll.onscroll = () => {
-    scrollable.scrollTo({
-        left: floatScroll.scrollLeft
-    });
+stickyScrollContent.style.width = `${scrollable.scrollWidth}px`;
+
+const isStickyScroll = () => {
+    const floatBox = stickyScroll.getBoundingClientRect();
+    const containerBox = containerScroll.getBoundingClientRect();
+    return floatBox.bottom + floatBox.height < containerBox.bottom;
+}
+
+let isStickyScrollActive = isStickyScroll();
+
+stickyScroll.onscroll = () => {
+    if (isStickyScrollActive) {
+        scrollable.scrollTo({
+            left: stickyScroll.scrollLeft
+        });
+    }
 };
 
+scrollable.onscroll = () => {
+    if (!isStickyScrollActive) {
+        stickyScroll.scrollTo({
+            left: scrollable.scrollLeft
+        });
+    }
+}
+
+
 window.onscroll = () => {
-    const floatBox = floatScroll.getBoundingClientRect();
-    const conteinerBox = containerScroll.getBoundingClientRect();
-    if (floatBox.bottom + floatBox.height >= conteinerBox.bottom) {
-        floatScroll.classList.add('hide');
+    isStickyScrollActive = isStickyScroll();
+    if (isStickyScroll()) {
+        stickyScroll.classList.remove('hide');
     } else {
-        floatScroll.classList.remove('hide');
+        stickyScroll.classList.add('hide');
     }
 };
